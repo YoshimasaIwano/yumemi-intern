@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { DataType, PopulationData, UsePopulationDataProps } from "../types";
 
-const usePopulationData = ({ selectedPrefectures, selectedMode }: UsePopulationDataProps) => {
+const usePopulationData = ({ selectedPrefectures, selectedMode, prefectures }: UsePopulationDataProps) => {
     const [populationData, setPopulationData] = useState<Array<PopulationData>>([]);
 
     useEffect(() => {
         if (selectedPrefectures.length === 0) {
-        setPopulationData([]);
-        return;
+            setPopulationData([]);
+            return;
         }
 
         Promise.all(
@@ -20,8 +20,9 @@ const usePopulationData = ({ selectedPrefectures, selectedMode }: UsePopulationD
             )
             .then((res) => res.json())
             .then((data) => {
+                const prefecture = prefectures.find((p) => p.prefCode === prefCode);
                 return {
-                    label: data.result.data[0].label,
+                    label: prefecture ? prefecture.prefName : "",
                     data: data.result.data[selectedMode].data.map((item: DataType) => item.value),
                     years: data.result.data[selectedMode].data.map((item: DataType) => item.year),
                 };

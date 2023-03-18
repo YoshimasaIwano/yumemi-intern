@@ -11,7 +11,7 @@ const Main = () => {
     const [prefectures, setPrefectures] = useState<Array<Prefecture>>([]);
     const [selectedPrefectures, setSelectedPrefectures] = useState<Array<number>>([]);
     const [selectedMode, setSelectedMode] = useState(0);
-    const populationData = usePopulationData({selectedPrefectures, selectedMode});
+    const populationData = usePopulationData({selectedPrefectures, selectedMode, prefectures});
 
     useEffect(() => {
         fetchPrefectures()
@@ -42,7 +42,7 @@ const Main = () => {
         {populationData.length === 0 ? (
             <p>Please select a prefecture to show its population composition</p>
         ) : (
-            <PopulationGraph data={populationData} mode={mode[selectedMode]}/>
+            <PopulationGraph data={populationData} mode={mode[selectedMode]} />
         )}
         </div>
     );

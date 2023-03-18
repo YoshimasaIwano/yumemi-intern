@@ -3,6 +3,11 @@ export type ModeProps = {
     onChange: (mode: number) => void;
 };
 
+export type DataType = {
+    year: number;
+    value: number;
+};
+
 export type PopulationData = {
     label: string;
     data: Array<number>;
@@ -25,12 +30,8 @@ export type PrefectureProps = {
     onPrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
-export type DataType = {
-    year: number;
-    value: number;
-};
-
 export type UsePopulationDataProps = {
     selectedPrefectures: Array<number>;
     selectedMode: number;
+    prefectures: Array<Prefecture>;
 };
