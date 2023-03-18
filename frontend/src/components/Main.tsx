@@ -1,39 +1,22 @@
-import { useState, useEffect } from "react";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { useEffect, useState } from "react";
 
-type Prefecture = {
-  prefCode: number;
-  prefName: string;
-};
-
-type PopulationDataProps = {
-  label: string;
-  data: Array<number>;
-  years: Array<number>;
-};
-
-type DataType = {
-    year: number;
-    value: number;
-}
-
-const mode: Array<string> = ["総人口", "年少人口", "生産年齢人口", "老年人口"]
+import PrefectureList from "./PrefectureList";
+import PopulationGraph from "./PopulationGraph";
+import ModeSelector from "./ModeSelector";
+import usePopulationData from "../hooks/usePopulationData";
+import fetchPrefectures from "../utils/fetchPrefectures";
+import { Prefecture } from "../types";
 
 const Main = () => {
     const [prefectures, setPrefectures] = useState<Array<Prefecture>>([]);
     const [selectedPrefectures, setSelectedPrefectures] = useState<Array<number>>([]);
-    const [populationData, setPopulationData] = useState<Array<PopulationDataProps>>([]);
     const [selectedMode, setSelectedMode] = useState(0);
+    const populationData = usePopulationData({selectedPrefectures, selectedMode});
 
-    useEffect(() => {fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
-        headers: { "X-API-KEY": String(process.env.REACT_APP_API_KEY) },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-        setPrefectures(data.result);
-        })
-        .catch((err) => console.log(err));
+    useEffect(() => {
+        fetchPrefectures()
+        .then((data) => setPrefectures(data))
+        .catch((err) => console.log(err));;
     }, []);
 
     const handlePrefectureChange = (prefCode: number, checked: boolean) => {
@@ -44,96 +27,23 @@ const Main = () => {
         }
     };
 
-    useEffect(() => {
-        if (selectedPrefectures.length === 0) {
-            setPopulationData([]);
-            return;
-        }
-
-        Promise.all(
-            selectedPrefectures.map((prefCode) =>
-                fetch(
-                `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
-                {
-                    headers: { "X-API-KEY": String(process.env.REACT_APP_API_KEY) },
-                }
-                )
-                .then((res) => res.json())
-                .then((data) => {
-                    const prefecture = prefectures.find((p) => p.prefCode === prefCode);
-                    return {
-                        label: prefecture ? prefecture.prefName : "",
-                        data: data.result.data[selectedMode].data.map((item: DataType) => item.value),
-                        years: data.result.data[selectedMode].data.map((item: DataType) => item.year),
-                    };
-                })
-            )
-        )
-        .then((data) => setPopulationData(data))
-        .catch((err) => console.log(err));
-    }, [selectedPrefectures, selectedMode]);
-
-    const options = {
-        chart: {
-            type: "line",
-        },
-        title: {
-            text:  mode[selectedMode],
-        },
-        xAxis: {
-            categories: populationData.map(data => data.years)[0],
-            title: {
-                text: "年度",
-            },
-        },
-        yAxis: {
-            title: {
-                text: "人口",
-            },
-        },
-        series: populationData.map((data) => ({
-            name: data.label,
-            data: data.data,
-        })),
-    };
-
+    const mode: Array<string> = ["総人口", "年少人口", "生産年齢人口", "老年人口"]
     return (
         <div className="main-container">
-            <h1>都道府県  リスト</h1>
-            <div className="list-container">
-                {prefectures.map((prefecture) => (
-                    <div key={prefecture.prefCode} className="prefecture-list">
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={selectedPrefectures.includes(prefecture.prefCode)}
-                                onChange={(e) =>
-                                    handlePrefectureChange(prefecture.prefCode, e.target.checked)
-                                }
-                            />
-                            {prefecture.prefName}
-                        </label>
-                    </div>
-                ))}
-            </div>
+        <h1>都道府県 リスト</h1>
+        <PrefectureList
+            prefectures={prefectures}
+            selectedPrefectures={selectedPrefectures}
+            onPrefectureChange={handlePrefectureChange}
+        />
 
-            <select 
-                className="mv-1 select-toggle"
-                value={selectedMode}
-                onChange={(e) => setSelectedMode(parseInt(e.target.value))}
-            >
-                <option value={0}>総人口</option>
-                <option value={1}>年少人口</option>
-                <option value={2}>生産年齢人口</option>
-                <option value={3}>老年人口</option>
-            </select>
-            
-            {populationData.length === 0 ? (
-                <p>Please select a prefecture to show its population composition</p>
-            ) : (
-                <HighchartsReact highcharts={Highcharts} options={options} className="graph"/>
-            )}
-            
+        <ModeSelector selectedMode={selectedMode} onChange={setSelectedMode} />
+
+        {populationData.length === 0 ? (
+            <p>Please select a prefecture to show its population composition</p>
+        ) : (
+            <PopulationGraph data={populationData} mode={mode[selectedMode]}/>
+        )}
         </div>
     );
 };
