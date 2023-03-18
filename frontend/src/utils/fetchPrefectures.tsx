@@ -10,7 +10,7 @@ const fetchPrefectures = async (): Promise<Prefecture[]> => {
         );
 
         if (!response.ok) {
-        throw new Error(response.statusText);
+            throw new Error(response.statusText);
         }
 
         const data = await response.json();
