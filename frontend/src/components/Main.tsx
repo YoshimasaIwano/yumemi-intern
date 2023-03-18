@@ -13,6 +13,11 @@ type PopulationDataProps = {
   years: Array<number>;
 };
 
+type DataType = {
+    year: number;
+    value: number;
+}
+
 const Main = () => {
     const [prefectures, setPrefectures] = useState<Array<Prefecture>>([]);
     const [selectedPrefectures, setSelectedPrefectures] = useState<Array<number>>([]);
@@ -55,8 +60,8 @@ const Main = () => {
                     const prefecture = prefectures.find((p) => p.prefCode === prefCode);
                     return {
                         label: prefecture ? prefecture.prefName : "",
-                        data: data.result.data[0].data.map((item: any) => item.value),
-                        years: data.result.data[0].data.map((item: any) => item.year),
+                        data: data.result.data[0].data.map((item: DataType) => item.value),
+                        years: data.result.data[0].data.map((item: DataType) => item.year),
                     };
                 })
             )
@@ -66,19 +71,19 @@ const Main = () => {
     }, [selectedPrefectures]);
 
 
-    const yearsArray: number[] = Array.from(Array(18), (_, i) => 1980 + i * 5);
+    // const yearsArray: number[] = Array.from(Array(18), (_, i) => 1980 + i * 5);
 
-    // console.log(populationData.map(data => data.years));
+    // console.log(populationData.map(data => data.years)[0]);
     // console.log(populationData);
     const options = {
         chart: {
             type: "line",
         },
         title: {
-            text: "Population Composition",
+            text:  "Population Composition",
         },
         xAxis: {
-            categories: yearsArray,
+            categories: populationData.map(data => data.years)[0],
             title: {
                 text: "Year",
             },
@@ -95,7 +100,7 @@ const Main = () => {
     };
 
     return (
-        <div>
+        <div className="main-container">
             <h1>Prefecture List</h1>
             <div className="list-container">
                 {prefectures.map((prefecture) => (
@@ -114,7 +119,7 @@ const Main = () => {
             ))}
             </div>
             
-            <h2>Population Composition</h2>
+            {/* <h2>Population Composition</h2> */}
             {populationData.length === 0 ? (
                 <p>Please select a prefecture to show its population composition</p>
             ) : (
