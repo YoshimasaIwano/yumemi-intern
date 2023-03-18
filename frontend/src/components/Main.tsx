@@ -83,12 +83,12 @@ const Main = () => {
         xAxis: {
             categories: populationData.map(data => data.years)[0],
             title: {
-                text: "Year",
+                text: "年度",
             },
         },
         yAxis: {
             title: {
-                text: "Population",
+                text: "人口",
             },
         },
         series: populationData.map((data) => ({
@@ -99,10 +99,10 @@ const Main = () => {
 
     return (
         <div className="main-container">
-            <h1>Prefecture List</h1>
+            <h1>都道府県  リスト</h1>
             <div className="list-container">
                 {prefectures.map((prefecture) => (
-                    <div key={prefecture.prefCode}>
+                    <div key={prefecture.prefCode} className="prefecture-list">
                         <label>
                             <input
                                 type="checkbox"
@@ -112,12 +112,13 @@ const Main = () => {
                                 }
                             />
                             {prefecture.prefName}
-                    </label>
-                </div>
-            ))}
+                        </label>
+                    </div>
+                ))}
             </div>
 
-            <select
+            <select 
+                className="mv-1 select-toggle"
                 value={selectedMode}
                 onChange={(e) => setSelectedMode(parseInt(e.target.value))}
             >
@@ -127,12 +128,12 @@ const Main = () => {
                 <option value={3}>老年人口</option>
             </select>
             
-            {/* <h2>Population Composition</h2> */}
             {populationData.length === 0 ? (
                 <p>Please select a prefecture to show its population composition</p>
             ) : (
-                <HighchartsReact highcharts={Highcharts} options={options} />
+                <HighchartsReact highcharts={Highcharts} options={options} className="graph"/>
             )}
+            
         </div>
     );
 };
