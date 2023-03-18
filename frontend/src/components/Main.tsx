@@ -18,10 +18,13 @@ type DataType = {
     value: number;
 }
 
+const mode: Array<string> = ["総人口", "年少人口", "生産年齢人口", "老年人口"]
+
 const Main = () => {
     const [prefectures, setPrefectures] = useState<Array<Prefecture>>([]);
     const [selectedPrefectures, setSelectedPrefectures] = useState<Array<number>>([]);
     const [populationData, setPopulationData] = useState<Array<PopulationDataProps>>([]);
+    const [selectedMode, setSelectedMode] = useState(0);
 
     useEffect(() => {fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
         headers: { "X-API-KEY": "M9hXOfFDjGH8ujFFFk0kcMv5Ib9yiGCOb2p5gi4L" },
@@ -60,27 +63,22 @@ const Main = () => {
                     const prefecture = prefectures.find((p) => p.prefCode === prefCode);
                     return {
                         label: prefecture ? prefecture.prefName : "",
-                        data: data.result.data[0].data.map((item: DataType) => item.value),
-                        years: data.result.data[0].data.map((item: DataType) => item.year),
+                        data: data.result.data[selectedMode].data.map((item: DataType) => item.value),
+                        years: data.result.data[selectedMode].data.map((item: DataType) => item.year),
                     };
                 })
             )
         )
         .then((data) => setPopulationData(data))
         .catch((err) => console.log(err));
-    }, [selectedPrefectures]);
+    }, [selectedPrefectures, selectedMode]);
 
-
-    // const yearsArray: number[] = Array.from(Array(18), (_, i) => 1980 + i * 5);
-
-    // console.log(populationData.map(data => data.years)[0]);
-    // console.log(populationData);
     const options = {
         chart: {
             type: "line",
         },
         title: {
-            text:  "Population Composition",
+            text:  mode[selectedMode],
         },
         xAxis: {
             categories: populationData.map(data => data.years)[0],
@@ -118,6 +116,16 @@ const Main = () => {
                 </div>
             ))}
             </div>
+
+            <select
+                value={selectedMode}
+                onChange={(e) => setSelectedMode(parseInt(e.target.value))}
+            >
+                <option value={0}>総人口</option>
+                <option value={1}>年少人口</option>
+                <option value={2}>生産年齢人口</option>
+                <option value={3}>老年人口</option>
+            </select>
             
             {/* <h2>Population Composition</h2> */}
             {populationData.length === 0 ? (
