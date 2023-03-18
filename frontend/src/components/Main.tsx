@@ -27,7 +27,7 @@ const Main = () => {
     const [selectedMode, setSelectedMode] = useState(0);
 
     useEffect(() => {fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
-        headers: { "X-API-KEY": "M9hXOfFDjGH8ujFFFk0kcMv5Ib9yiGCOb2p5gi4L" },
+        headers: { "X-API-KEY": String(process.env.REACT_APP_API_KEY) },
         })
         .then((res) => res.json())
         .then((data) => {
@@ -55,7 +55,7 @@ const Main = () => {
                 fetch(
                 `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
                 {
-                    headers: { "X-API-KEY": "M9hXOfFDjGH8ujFFFk0kcMv5Ib9yiGCOb2p5gi4L" },
+                    headers: { "X-API-KEY": String(process.env.REACT_APP_API_KEY) },
                 }
                 )
                 .then((res) => res.json())
