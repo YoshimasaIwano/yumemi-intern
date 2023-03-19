@@ -27,7 +27,7 @@ const fetchPopulationData = () => {
           .then((data) => {
             const prefecture = prefectures.find((p) => p.prefCode === prefCode);
             return {
-              label: prefecture ? prefecture.prefName : '',
+              prefName: prefecture ? prefecture.prefName : '',
               data: data.result.data[selectedMode].data.map(
                 (item: DataType) => item.value
               ),

@@ -11,7 +11,7 @@ export type DataType = {
 };
 
 export type PopulationData = {
-  label: string;
+  prefName: string;
   data: Array<number>;
   years: Array<number>;
 };

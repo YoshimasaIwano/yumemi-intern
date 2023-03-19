@@ -28,7 +28,7 @@ const PopulationGraph = () => {
       }
     },
     series: populationData.map((d) => ({
-      name: d.label,
+      name: d.prefName,
       data: d.data
     }))
   };

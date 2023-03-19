@@ -113,8 +113,14 @@ describe('selecting ModeSelector', () => {
       <ModeSelector selectedMode={0} onChange={handleChange} />
     );
 
+    fireEvent.change(getByRole('combobox'), { target: { value: '0' } });
+    expect(handleChange).toHaveBeenCalledWith(0);
+    fireEvent.change(getByRole('combobox'), { target: { value: '1' } });
+    expect(handleChange).toHaveBeenCalledWith(1);
     fireEvent.change(getByRole('combobox'), { target: { value: '2' } });
     expect(handleChange).toHaveBeenCalledWith(2);
+    fireEvent.change(getByRole('combobox'), { target: { value: '3' } });
+    expect(handleChange).toHaveBeenCalledWith(3);
   });
 });
 
