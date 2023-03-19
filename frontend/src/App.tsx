@@ -1,4 +1,4 @@
-import './App.css';
+import './style/App.css';
 import Main from './components/Main';
 
 import { initializeApp } from 'firebase/app';
