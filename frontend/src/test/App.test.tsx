@@ -4,8 +4,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import fetchPrefectures from '../utils/fetchPrefectures';
 import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
-import fetchPopulationData from '../utils/fetchPopulationData';
 import Main from '../components/Main';
+import PopulationGraph from '../components/PopulationGraph';
 
 // 1. testing main page
 test('renders Main page', async () => {
@@ -124,53 +124,10 @@ describe('selecting ModeSelector', () => {
   });
 });
 
-// 4. testing tching prefecture population data
-const mockData = {
-  data: [
-    {
-      data: [
-        9683802, 10869244, 11408071, 11673554, 11618281, 11829363, 11855563,
-        11773605, 12064101, 12576601, 13159388, 13515271, 14047594, 13845936,
-        13882538, 13851782, 13758624, 13606683
-      ],
-      label: '東京都',
-      years: [
-        1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015,
-        2020, 2025, 2030, 2035, 2040, 2045
-      ]
-    },
-    {
-      data: [
-        5504746, 6657189, 7620480, 8278925, 8473446, 8668095, 8734516, 8797268,
-        8805081, 8817166, 8865245, 8839469, 8837685, 8526202, 8262029, 7962983,
-        7649229, 7335352
-      ],
-      label: '大阪府',
-      years: [
-        1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015,
-        2020, 2025, 2030, 2035, 2040, 2045
-      ]
-    }
-  ],
-  mode: '総人口'
-};
-
-describe('fetchPopulationData', () => {
-  try {
-    const result = fetchPopulationData();
-
-    expect(result).toEqual(mockData);
-  } catch (error) {
-    // handle any errors that occur
-    console.error(error);
-  }
-
-  try {
-    const result = fetchPopulationData();
-
-    expect(result).toEqual([]);
-  } catch (error) {
-    // handle any errors that occur
-    console.error(error);
-  }
+// 5. testing PoopulationGraph
+describe('PopulationGraph', () => {
+  it('renders the graph', () => {
+    const { container } = render(<PopulationGraph />);
+    expect(container.querySelector('.graph')).toBeInTheDocument();
+  });
 });
