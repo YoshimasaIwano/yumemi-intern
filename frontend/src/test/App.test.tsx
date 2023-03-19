@@ -150,15 +150,8 @@ const mockData = {
 };
 
 describe('fetchPopulationData', () => {
-  const selectedPrefectures = [1, 13, 27];
-  const selectedMode = 0;
-
   try {
-    const result = fetchPopulationData({
-      selectedPrefectures,
-      selectedMode,
-      prefectures
-    });
+    const result = fetchPopulationData();
 
     expect(result).toEqual(mockData);
   } catch (error) {
@@ -167,11 +160,7 @@ describe('fetchPopulationData', () => {
   }
 
   try {
-    const result = fetchPopulationData({
-      selectedPrefectures: [],
-      selectedMode: 0,
-      prefectures: prefectures
-    });
+    const result = fetchPopulationData();
 
     expect(result).toEqual([]);
   } catch (error) {

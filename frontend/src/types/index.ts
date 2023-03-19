@@ -3,6 +3,8 @@ export type ModeProps = {
   onChange: (mode: number) => void;
 };
 
+export const modeOptions = ['総人口', '年少人口', '生産年齢人口', '老年人口'];
+
 export type DataType = {
   year: number;
   value: number;
@@ -12,11 +14,6 @@ export type PopulationData = {
   label: string;
   data: Array<number>;
   years: Array<number>;
-};
-
-export type PopulationDataProps = {
-  data: Array<PopulationData>;
-  mode: string;
 };
 
 export type Prefecture = {

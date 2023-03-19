@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { DataType, PopulationData, PopulationConditionProps } from '../types';
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../hooks/AppContext';
+import { DataType, PopulationData } from '../types';
 
-const fetchPopulationData = ({
-  selectedPrefectures,
-  selectedMode,
-  prefectures
-}: PopulationConditionProps) => {
+const fetchPopulationData = () => {
+  const { selectedPrefectures } = useContext(AppContext);
+  const { selectedMode } = useContext(AppContext);
+  const { prefectures } = useContext(AppContext);
   const [populationData, setPopulationData] = useState<Array<PopulationData>>(
     []
   );

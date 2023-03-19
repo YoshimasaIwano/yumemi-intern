@@ -1,8 +1,6 @@
-import { ModeProps } from '../types';
+import { modeOptions, ModeProps } from '../types';
 
 const ModeSelector = ({ selectedMode, onChange }: ModeProps) => {
-  const modeOptions = ['総人口', '年少人口', '生産年齢人口', '老年人口'];
-
   return (
     <select
       className="mv-1 select-toggle"
