@@ -1,17 +1,34 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { PopulationDataProps } from '../types';
+import { AppContext } from '../hooks/AppContext';
+import { useContext } from 'react';
+import fetchPopulationData from '../utils/fetchPopulationData';
 
-const PopulationGraph = ({ data, mode }: PopulationDataProps) => {
+const PopulationGraph = () => {
+  const { selectedPrefectures } = useContext(AppContext);
+  const { selectedMode } = useContext(AppContext);
+  const { prefectures } = useContext(AppContext);
+
+  const populationData = fetchPopulationData({
+    selectedPrefectures,
+    selectedMode,
+    prefectures
+  });
+  const mode: Array<string> = [
+    '総人口',
+    '年少人口',
+    '生産年齢人口',
+    '老年人口'
+  ];
   const options = {
     chart: {
       type: 'line'
     },
     title: {
-      text: mode
+      text: mode[selectedMode]
     },
     xAxis: {
-      categories: data.map((d) => d.years)[0],
+      categories: populationData.map((d) => d.years)[0],
       title: {
         text: '年度'
       }
@@ -21,7 +38,7 @@ const PopulationGraph = ({ data, mode }: PopulationDataProps) => {
         text: '人口'
       }
     },
-    series: data.map((d) => ({
+    series: populationData.map((d) => ({
       name: d.label,
       data: d.data
     }))

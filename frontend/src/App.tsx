@@ -1,5 +1,5 @@
-import './style/App.css';
 import Main from './components/Main';
+import { AppProvider } from './hooks/AppContext';
 
 import { initializeApp } from 'firebase/app';
 
@@ -12,9 +12,9 @@ const app = initializeApp(firebaseConfig);
 
 function App() {
   return (
-    <div className="App">
+    <AppProvider>
       <Main />
-    </div>
+    </AppProvider>
   );
 }
 

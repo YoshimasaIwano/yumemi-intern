@@ -1,10 +1,21 @@
 import { PrefectureProps } from '../types';
+import { AppContext } from '../hooks/AppContext';
+import { useContext } from 'react';
 
-const PrefectureList = ({
-  prefectures,
-  selectedPrefectures,
-  onPrefectureChange
-}: PrefectureProps) => {
+const PrefectureList = ({ prefectures }: PrefectureProps) => {
+  const { selectedPrefectures, setSelectedPrefectures } =
+    useContext(AppContext);
+
+  const handlePrefectureChange = (prefCode: number, checked: boolean) => {
+    if (checked) {
+      setSelectedPrefectures([...selectedPrefectures, prefCode]);
+    } else {
+      setSelectedPrefectures(
+        selectedPrefectures.filter((code) => code !== prefCode)
+      );
+    }
+  };
+
   return (
     <div className="list-container">
       {prefectures.map((prefecture) => (
@@ -17,7 +28,7 @@ const PrefectureList = ({
               type="checkbox"
               checked={selectedPrefectures.includes(prefecture.prefCode)}
               onChange={(e) =>
-                onPrefectureChange(prefecture.prefCode, e.target.checked)
+                handlePrefectureChange(prefecture.prefCode, e.target.checked)
               }
             />
             {prefecture.prefName}

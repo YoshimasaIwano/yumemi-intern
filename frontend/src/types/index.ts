@@ -26,12 +26,19 @@ export type Prefecture = {
 
 export type PrefectureProps = {
   prefectures: Prefecture[];
-  selectedPrefectures: number[];
-  onPrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
 export type PopulationConditionProps = {
   selectedPrefectures: Array<number>;
   selectedMode: number;
   prefectures: Array<Prefecture>;
+};
+
+export type AppContextType = {
+  prefectures: Array<Prefecture>;
+  selectedPrefectures: number[];
+  selectedMode: number;
+  setPrefectures: React.Dispatch<React.SetStateAction<Prefecture[]>>;
+  setSelectedPrefectures: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedMode: React.Dispatch<React.SetStateAction<number>>;
 };
