@@ -22,9 +22,8 @@ yumemi-intern/
 │   │   │   ├── PopulationGraph.tsx
 │   │   │   └── PrefectureList.tsx
 │   │   ├── hooks/
-│   │   │   └── usePopulationData.tsx
+│   │   │   └── AppContext.tsx
 │   │   ├── styles/
-│   │   │   ├── App.css
 │   │   │   ├── index.css
 │   │   │   └── main.css
 │   │   ├── test/
@@ -32,6 +31,7 @@ yumemi-intern/
 │   │   ├── types/
 │   │   │   └── index.ts
 │   │   └── utils/
+│   │       ├── fetchPopulationData.tsx
 │   │       └── fetchPrefectures.tsx
 │   ├── .env
 │   ├── .env.production
