@@ -1,11 +1,13 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import React, { useState } from 'react';
+import { render, screen, fireEvent, renderHook, waitFor } from '@testing-library/react';
 import App from '../App';
 import fetchPrefectures from '../utils/fetchPrefectures';
 import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
 import PopulationGraph from '../components/PopulationGraph';
+import  usePopulationData  from "../hooks/usePopulationData";
 
+// 1. testing main page
 test('renders Main page', () => {
   const {asFragment, getByText} = render(<App />)
   expect(getByText('都道府県 リスト')).toBeInTheDocument()
@@ -56,6 +58,7 @@ test('renders Main page', () => {
   `)
 });
 
+// 2. testing fetching a prefecture list
 const prefectures = [  
   {prefCode: 1, prefName: '北海道'},
   {prefCode: 2, prefName: '青森県'},
@@ -117,6 +120,7 @@ test('fetching a prefecture list', async () => {
   }
 });
 
+// 3. rendering PrefectureList
 test('rendering PrefectureList', async () => {
   const selectedPrefectures = [1, 2, 3];
   const onPrefectureChange = jest.fn();
@@ -140,7 +144,7 @@ test('rendering PrefectureList', async () => {
   });
 });
 
-
+// 4. testing selecting ModeSelector
 describe("selecting ModeSelector", () => {
   it("should render mode options", () => {
     const { getByText } = render(
@@ -164,6 +168,7 @@ describe("selecting ModeSelector", () => {
   });
 });
 
+// 4. testing drawing PopulationGraph
 const psedoData = {
   data: [
     {
@@ -196,4 +201,53 @@ describe('drawing PopulationGraph', () => {
   });
 });
 
+// 5. testing fetching prefecture population data
+const mockPrefecture = [  
+  {prefCode: 1, prefName: '北海道'},
+  {prefCode: 13, prefName: '東京都'},
+  {prefCode: 27, prefName: '大阪府'},
+]
 
+const mockPopulationData = [
+  {
+    data: [5039206, 5171800, 5184287, 5338206, 5575989, 5679439, 5643647, 5692321, 5683062, 5627737, 5506419, 5381733, 5224614, 5016554, 4791592, 4546357, 4280427, 4004973],
+    label: "北海道",
+    years: [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045],
+  },
+  {
+    data: [9683802, 10869244, 11408071, 11673554, 11618281, 11829363, 11855563, 11773605, 12064101, 12576601, 13159388, 13515271, 14047594, 13845936, 13882538, 13851782, 13758624, 13606683],
+    label: "東京都",
+    years: [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045],
+  },
+  {
+    data:  [5504746, 6657189, 7620480, 8278925, 8473446, 8668095, 8734516, 8797268, 8805081, 8817166, 8865245, 8839469, 8837685, 8526202, 8262029, 7962983, 7649229, 7335352],
+    label: "大阪府",
+    years: [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045]
+  },
+];
+
+describe('usePopulationData', () => {
+  it("returns empty array when no prefecture is selected", async () => {
+    const { result } = renderHook(() =>
+      usePopulationData({
+        selectedPrefectures: [],
+        selectedMode: 0,
+        prefectures,
+      })
+    );
+
+    await waitFor(() => expect(result.current).toEqual([]));
+  });
+
+  it("returns population data for a selected prefecture", async () => {
+    const { result } = renderHook(() =>
+      usePopulationData({
+        selectedPrefectures: [1, 13, 27],
+        selectedMode: 0,
+        prefectures: mockPrefecture,
+      })
+    );
+
+    await waitFor(() => expect(result.current).toEqual(mockPopulationData));
+  });
+});

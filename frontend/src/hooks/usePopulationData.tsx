@@ -6,7 +6,6 @@ const usePopulationData = ({ selectedPrefectures, selectedMode, prefectures }: U
 
     useEffect(() => {
         if (selectedPrefectures.length === 0) {
-            setPopulationData([]);
             return;
         }
 
