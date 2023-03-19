@@ -1,7 +1,7 @@
-export type ModeProps = {
-  selectedMode: number;
-  onChange: (mode: number) => void;
-};
+// export type ModeProps = {
+//   selectedMode: number;
+//   onChange: (mode: number) => void;
+// };
 
 export const modeOptions = ['総人口', '年少人口', '生産年齢人口', '老年人口'];
 
@@ -21,9 +21,9 @@ export type Prefecture = {
   prefName: string;
 };
 
-export type PrefectureProps = {
-  prefectures: Prefecture[];
-};
+// export type PrefectureProps = {
+//   prefectures: Prefecture[];
+// };
 
 export type PopulationConditionProps = {
   selectedPrefectures: Array<number>;

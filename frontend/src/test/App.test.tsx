@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-useless-escape */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { AppContext } from '../hooks/AppContext';
 import fetchPrefectures from '../utils/fetchPrefectures';
 import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
 import Main from '../components/Main';
 import PopulationGraph from '../components/PopulationGraph';
 import Footer from '../components/Footer';
+import { modeOptions } from '../types';
 
 // 1. testing main page
 test('renders Main page', async () => {
@@ -80,51 +82,100 @@ test('fetching a prefecture list', async () => {
 });
 
 // 3. rendering PrefectureList
-test('rendering PrefectureList', async () => {
-  try {
-    render(<PrefectureList prefectures={prefectures} />);
-  } catch (error) {
-    console.error(error);
-  }
+describe('PrefectureList', () => {
+  it('renders the correct number of checkboxes', () => {
+    const selectedMode = 1;
+    const setSelectedMode = jest.fn();
+    const setPrefectures = jest.fn();
+    const setSelectedPrefectures = jest.fn();
+    const selectedPrefectures = [1];
 
-  // Check if all prefecture names are rendered
-  prefectures.forEach((prefecture) => {
-    const prefectureName = screen.getByText(prefecture.prefName);
-    expect(prefectureName).toBeInTheDocument();
+    render(
+      <AppContext.Provider
+        value={{
+          prefectures: prefectures,
+          setPrefectures,
+          selectedPrefectures,
+          setSelectedPrefectures,
+          selectedMode,
+          setSelectedMode
+        }}
+      >
+        <PrefectureList />
+      </AppContext.Provider>
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+
+    expect(checkboxes.length).toBe(prefectures.length);
   });
 });
 
 // 4. testing selecting ModeSelector
-describe('selecting ModeSelector', () => {
-  it('should render mode options', () => {
-    const { getByText } = render(
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      <ModeSelector selectedMode={0} onChange={() => {}} />
+
+describe('ModeSelector', () => {
+  it('renders a select element with the correct options', () => {
+    const selectedMode = 1;
+    const setSelectedMode = jest.fn();
+    const setPrefectures = jest.fn();
+    const setSelectedPrefectures = jest.fn();
+    const selectedPrefectures = [1];
+
+    render(
+      <AppContext.Provider
+        value={{
+          prefectures,
+          setPrefectures,
+          selectedPrefectures,
+          setSelectedPrefectures,
+          selectedMode,
+          setSelectedMode
+        }}
+      >
+        <ModeSelector />
+      </AppContext.Provider>
     );
 
-    expect(getByText('総人口')).toBeInTheDocument();
-    expect(getByText('年少人口')).toBeInTheDocument();
-    expect(getByText('生産年齢人口')).toBeInTheDocument();
-    expect(getByText('老年人口')).toBeInTheDocument();
+    const select = screen.getByRole('combobox');
+
+    expect(select).toBeInTheDocument();
+
+    modeOptions.forEach((option, i) => {
+      const optionElement = screen.getByText(option);
+      expect(optionElement).toBeInTheDocument();
+      expect(optionElement.getAttribute('value')).toBe(`${i}`);
+    });
   });
 
-  it('should call onChange function when a mode option is selected', () => {
-    const handleChange = jest.fn();
-    const { getByRole } = render(
-      <ModeSelector selectedMode={0} onChange={handleChange} />
+  it('calls setSelectedMode when a new option is selected', () => {
+    const selectedMode = 1;
+    const setSelectedMode = jest.fn();
+    const setPrefectures = jest.fn();
+    const setSelectedPrefectures = jest.fn();
+    const selectedPrefectures = [1];
+
+    render(
+      <AppContext.Provider
+        value={{
+          prefectures,
+          setPrefectures,
+          selectedPrefectures,
+          setSelectedPrefectures,
+          selectedMode,
+          setSelectedMode
+        }}
+      >
+        <ModeSelector />
+      </AppContext.Provider>
     );
 
-    fireEvent.change(getByRole('combobox'), { target: { value: '0' } });
-    expect(handleChange).toHaveBeenCalledWith(0);
-    fireEvent.change(getByRole('combobox'), { target: { value: '1' } });
-    expect(handleChange).toHaveBeenCalledWith(1);
-    fireEvent.change(getByRole('combobox'), { target: { value: '2' } });
-    expect(handleChange).toHaveBeenCalledWith(2);
-    fireEvent.change(getByRole('combobox'), { target: { value: '3' } });
-    expect(handleChange).toHaveBeenCalledWith(3);
+    const select = screen.getByRole('combobox');
+
+    fireEvent.change(select, { target: { value: '2' } });
+
+    expect(setSelectedMode).toHaveBeenCalledWith(2);
   });
 });
-
 // 5. testing PoopulationGraph
 describe('PopulationGraph', () => {
   it('renders the graph', () => {

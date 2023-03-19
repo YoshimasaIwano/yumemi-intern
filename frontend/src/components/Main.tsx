@@ -39,9 +39,9 @@ const Main = () => {
     >
       <div className="main-container">
         <h1>都道府県 リスト</h1>
-        <PrefectureList prefectures={prefectures} />
+        <PrefectureList />
 
-        <ModeSelector selectedMode={selectedMode} onChange={setSelectedMode} />
+        <ModeSelector />
 
         <PopulationGraph />
       </div>

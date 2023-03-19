@@ -1,8 +1,8 @@
-import { PrefectureProps } from '../types';
 import { AppContext } from '../hooks/AppContext';
 import { useContext } from 'react';
 
-const PrefectureList = ({ prefectures }: PrefectureProps) => {
+const PrefectureList = () => {
+  const { prefectures } = useContext(AppContext);
   const { selectedPrefectures, setSelectedPrefectures } =
     useContext(AppContext);
 
