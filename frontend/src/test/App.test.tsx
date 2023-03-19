@@ -153,6 +153,7 @@ test('rendering PrefectureList', async () => {
 describe('selecting ModeSelector', () => {
   it('should render mode options', () => {
     const { getByText } = render(
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       <ModeSelector selectedMode={0} onChange={() => {}} />
     );
 
