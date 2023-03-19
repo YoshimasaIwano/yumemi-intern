@@ -51,6 +51,19 @@ yumemi-intern/
 firebaseを用いてデプロイされており、以下のサイトから作品を閲覧することができます。  
 https://yumemi-intern-fbe1a.web.app/
 
+# ESLintの使用 
+  ESLintを使用するために設定ファイルを作成した。```.eslintrc```   
+  そして、コードをコミットする前に以下のコマンドを打ってコードを整えた。  
+  ```npm run lint```  
+  また、VSCodeのextensionもインストールしたので、コミット前でも修正が可能であることを発見した。
+
+# Prettierの使用  
+同様にPrettierの設定ファイルを作成した。```.prettierrc```  
+実行するコマンドは以下の通りである。  
+```npm run prettier-format```  
+  
+    
+
 # 困難
 - グラフの描画  
   Highchartsを用いてグラフを描画した経験がなかったので調べながら実装するのに少し時間がかかった。
@@ -60,3 +73,4 @@ https://yumemi-intern-fbe1a.web.app/
   今までにテストケースを書かなければいけない状況に遭遇したことがなかったので、初めてで調べながら実装した。  
 - ESLintとPrettierの使用  
   このツールの使用したことがなかったので、使用方法の習得に少し時間がかかった。
+
