@@ -6,6 +6,7 @@ import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
 import Main from '../components/Main';
 import PopulationGraph from '../components/PopulationGraph';
+import Footer from '../components/Footer';
 
 // 1. testing main page
 test('renders Main page', async () => {
@@ -129,5 +130,24 @@ describe('PopulationGraph', () => {
   it('renders the graph', () => {
     const { container } = render(<PopulationGraph />);
     expect(container.querySelector('.graph')).toBeInTheDocument();
+  });
+});
+
+// 6. testing footer
+describe('Footer', () => {
+  it('renders the correct content', () => {
+    render(<Footer />);
+
+    const copyrightText = screen.getByText(/All rights are reserved 2023 by/);
+    const githubLink = screen.getByRole('link', {
+      name: /@Yoshimasa Iwano \(Github\)/
+    });
+
+    expect(copyrightText).toBeInTheDocument();
+    expect(githubLink).toBeInTheDocument();
+    expect(githubLink).toHaveAttribute(
+      'href',
+      'https://github.com/YoshimasaIwano'
+    );
   });
 });
