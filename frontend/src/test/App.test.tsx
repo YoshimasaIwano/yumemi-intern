@@ -4,6 +4,7 @@ import App from '../App';
 import fetchPrefectures from '../utils/fetchPrefectures';
 import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
+import PopulationGraph from '../components/PopulationGraph';
 
 test('renders Main page', () => {
   const {asFragment, getByText} = render(<App />)
@@ -116,17 +117,21 @@ test('fetching a prefecture list', async () => {
   }
 });
 
-test('renders a list of prefectures', () => {
+test('rendering PrefectureList', async () => {
   const selectedPrefectures = [1, 2, 3];
   const onPrefectureChange = jest.fn();
 
-  render(
-    <PrefectureList
-      prefectures={prefectures}
-      selectedPrefectures={selectedPrefectures}
-      onPrefectureChange={onPrefectureChange}
-    />
-  );
+  try {
+    render(
+      <PrefectureList
+        prefectures={prefectures}
+        selectedPrefectures={selectedPrefectures}
+        onPrefectureChange={onPrefectureChange}
+      />
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
   // Check if all prefecture names are rendered
   prefectures.forEach((prefecture) => {
@@ -136,8 +141,7 @@ test('renders a list of prefectures', () => {
 });
 
 
-
-describe("ModeSelector", () => {
+describe("selecting ModeSelector", () => {
   it("should render mode options", () => {
     const { getByText } = render(
       <ModeSelector selectedMode={0} onChange={() => {}} />
@@ -159,3 +163,37 @@ describe("ModeSelector", () => {
     expect(handleChange).toHaveBeenCalledWith(2);
   });
 });
+
+const psedoData = {
+  data: [
+    {
+      data: [9683802, 10869244, 11408071, 11673554, 11618281, 11829363, 11855563, 11773605, 12064101, 12576601, 13159388, 13515271, 14047594, 13845936, 13882538, 13851782, 13758624, 13606683],
+      label: "東京都",
+      years: [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045],
+    },
+    {
+      data:  [5504746, 6657189, 7620480, 8278925, 8473446, 8668095, 8734516, 8797268, 8805081, 8817166, 8865245, 8839469, 8837685, 8526202, 8262029, 7962983, 7649229, 7335352],
+      label: "大阪府",
+      years: [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045]
+    },
+  ],
+  mode: '総人口',
+};
+
+describe('drawing PopulationGraph', () => {
+  it('renders the graph with correct data and mode', () => {
+    render(<PopulationGraph data={psedoData.data} mode={psedoData.mode} />);
+    const titleElement = screen.getByText(psedoData.mode);
+    expect(titleElement).toBeInTheDocument();
+    const xAxisElement = screen.getByText('年度');
+    expect(xAxisElement).toBeInTheDocument();
+    const yAxisElement = screen.getByText('人口');
+    expect(yAxisElement).toBeInTheDocument();
+    const tokyoElement = screen.getByText('東京都');
+    expect(tokyoElement).toBeInTheDocument();
+    const osakaElement = screen.getByText('大阪府');
+    expect(osakaElement).toBeInTheDocument();
+  });
+});
+
+

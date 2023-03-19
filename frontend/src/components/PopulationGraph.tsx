@@ -3,28 +3,29 @@ import HighchartsReact from "highcharts-react-official";
 import { PopulationDataProps } from "../types";
 
 const PopulationGraph = ({ data, mode }: PopulationDataProps) => {
-  const options = {
-    chart: {
-        type: "line",
-    },
-    title: {
-        text: mode,
-    },
-    xAxis: {
-        categories: data.map((d) => d.years)[0],
-        title: {
-            text: "年度",
+    const options = {
+        chart: {
+            type: "line",
         },
-    },
-    yAxis: {
         title: {
-            text: "人口",
+            text: mode,
         },
-    },
-    series: data.map((d) => ({
-        name: d.label,
-        data: d.data,
-    })),
+        xAxis: {
+            categories: data.map((d) => d.years)[0],
+            title: {
+                text: "年度",
+            },
+        },
+        yAxis: {
+            title: {
+                text: "人口",
+            },
+        },
+        series: data.map((d) => ({
+            name: d.label,
+            data: d.data,
+        })
+    ),
   };
 
   return (
