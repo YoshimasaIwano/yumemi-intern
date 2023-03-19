@@ -1,37 +1,37 @@
 export type ModeProps = {
-    selectedMode: number;
-    onChange: (mode: number) => void;
+  selectedMode: number;
+  onChange: (mode: number) => void;
 };
 
 export type DataType = {
-    year: number;
-    value: number;
+  year: number;
+  value: number;
 };
 
 export type PopulationData = {
-    label: string;
-    data: Array<number>;
-    years: Array<number>;
+  label: string;
+  data: Array<number>;
+  years: Array<number>;
 };
 
 export type PopulationDataProps = {
-    data: Array<PopulationData>;
-    mode: string;
+  data: Array<PopulationData>;
+  mode: string;
 };
 
 export type Prefecture = {
-    prefCode: number;
-    prefName: string;
+  prefCode: number;
+  prefName: string;
 };
 
 export type PrefectureProps = {
-    prefectures: Prefecture[];
-    selectedPrefectures: number[];
-    onPrefectureChange: (prefCode: number, checked: boolean) => void;
+  prefectures: Prefecture[];
+  selectedPrefectures: number[];
+  onPrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
 export type UsePopulationDataProps = {
-    selectedPrefectures: Array<number>;
-    selectedMode: number;
-    prefectures: Array<Prefecture>;
+  selectedPrefectures: Array<number>;
+  selectedMode: number;
+  prefectures: Array<Prefecture>;
 };

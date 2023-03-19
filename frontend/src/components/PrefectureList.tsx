@@ -8,7 +8,7 @@ const PrefectureList = ({
   return (
     <div className="list-container">
       {prefectures.map((prefecture) => (
-        <div key={prefecture.prefCode} className="prefecture-list">
+        <div key={prefecture.prefCode} className="prefecture-list prefecture-list-sm font-sm">
           <label>
             <input
               type="checkbox"
