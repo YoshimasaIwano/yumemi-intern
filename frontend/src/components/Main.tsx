@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import PrefectureList from './PrefectureList';
 import PopulationGraph from './PopulationGraph';
 import ModeSelector from './ModeSelector';
-import usePopulationData from '../hooks/usePopulationData';
+import fetchPopulationData from '../utils/fetchPopulationData';
 import fetchPrefectures from '../utils/fetchPrefectures';
 import { Prefecture } from '../types';
 
@@ -13,7 +13,7 @@ const Main = () => {
     []
   );
   const [selectedMode, setSelectedMode] = useState(0);
-  const populationData = usePopulationData({
+  const populationData = fetchPopulationData({
     selectedPrefectures,
     selectedMode,
     prefectures

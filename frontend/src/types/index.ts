@@ -30,7 +30,7 @@ export type PrefectureProps = {
   onPrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
-export type UsePopulationDataProps = {
+export type PopulationConditionProps = {
   selectedPrefectures: Array<number>;
   selectedMode: number;
   prefectures: Array<Prefecture>;

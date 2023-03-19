@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { DataType, PopulationData, UsePopulationDataProps } from '../types';
+import { DataType, PopulationData, PopulationConditionProps } from '../types';
 
-const usePopulationData = ({
+const fetchPopulationData = ({
   selectedPrefectures,
   selectedMode,
   prefectures
-}: UsePopulationDataProps) => {
+}: PopulationConditionProps) => {
   const [populationData, setPopulationData] = useState<Array<PopulationData>>(
     []
   );
@@ -45,4 +45,4 @@ const usePopulationData = ({
   return populationData;
 };
 
-export default usePopulationData;
+export default fetchPopulationData;

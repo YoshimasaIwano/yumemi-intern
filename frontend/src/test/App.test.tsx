@@ -10,7 +10,7 @@ import fetchPrefectures from '../utils/fetchPrefectures';
 import PrefectureList from '../components/PrefectureList';
 import ModeSelector from '../components/ModeSelector';
 import PopulationGraph from '../components/PopulationGraph';
-import usePopulationData from '../hooks/usePopulationData';
+import fetchPopulationData from '../utils/fetchPopulationData';
 
 // 1. testing main page
 test('renders Main page', () => {
@@ -266,10 +266,10 @@ const mockPopulationData = [
   }
 ];
 
-describe('usePopulationData', () => {
+describe('fetchPopulationData', () => {
   it('returns empty array when no prefecture is selected', async () => {
     const { result } = renderHook(() =>
-      usePopulationData({
+      fetchPopulationData({
         selectedPrefectures: [],
         selectedMode: 0,
         prefectures
@@ -281,7 +281,7 @@ describe('usePopulationData', () => {
 
   it('returns population data for a selected prefecture', async () => {
     const { result } = renderHook(() =>
-      usePopulationData({
+      fetchPopulationData({
         selectedPrefectures: [1, 13, 27],
         selectedMode: 0,
         prefectures: mockPrefecture
